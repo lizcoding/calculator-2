@@ -1,29 +1,22 @@
 """CLI application for a prefix-notation calculator."""
 
-"""
-Further Study To-Do:
-1. Fixed Decimal Places
-2. Check for correct operator
-
-3. Infinit Inputs
-4. reduce()
-5. Try Infix Notation
-6. Automate Process
-"""
-
+from math import ceil
 from arithmetic import (add, subtract, multiply, divide, square, cube,
                         power, mod, )
+
+
+operators = ["+", "-", "*", "x", "/", "square", "cube", "power", "pow", "mod"]
 
 while True:
     input_string = input("Enter prefix equation, (for example + 1 2): ")
     tokens = input_string.split(' ')
 
-    #check for exit condition
+    # check for exit condition
     if "q" in tokens or "quit" in tokens:
         print("Exiting application. Goodbye!")
         break
     
-    #check for valid prefix equation
+    # check for valid prefix equation
     if tokens[0] in ['square', 'cube']:
         if len(tokens) > 2:
             print("Invalid inputs. Try again!")
@@ -31,9 +24,10 @@ while True:
     elif len(tokens) < 3:
         print("Invalid inputs. Try again!")
         continue
-
-    if tokens[0].isdigit():
-        print("Please enter an equation with the operator prefixed. Try again!")
+    
+    # check for valid prefix operator
+    if not tokens[0] in operators:
+        print("Please enter a valid prefix operator. Try again!")
         continue
     
     # validate float numbers when len(tokens) == 3 or len(tokens) == 2
@@ -46,7 +40,8 @@ while True:
         print("Please enter number values after the operator. Try again!")
         continue
     result = None
-    #main logic for calculator
+
+    # main logic for calculator
     if operator == '+':
         result = add(num1, num2)
     elif operator == '-':
@@ -59,13 +54,18 @@ while True:
         result = square(num1)
     elif operator == 'cube':
         result = cube(num1)
-    elif operator == 'power':
+    elif operator == 'power' or operator == 'pow':
         result = power(num1, num2)
-    elif operator == 'mod':
-        result = mod(num1, num2)
     else:
-        print('Please try again!')
-        break
+        result = mod(num1, num2)
     
-    # unrounded
-    print(f"{result:.2f}")
+    # print result rounded to two decimal places
+    print(f"{ceil(result * 100) / 100.0}")
+
+"""
+Further Study To-Do:
+1. Infinit Inputs
+2. reduce()
+3. Try Infix Notation
+4. Automate Process
+"""
